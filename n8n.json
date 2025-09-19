@@ -1,0 +1,149 @@
+{
+  "nodes": [
+    {
+      "id": "webhookTrigger",
+      "type": "n8n-nodes-base.webhook",
+      "name": "Chat Input",
+      "parameters": {
+        "path": "krishi-chat",
+        "httpMethod": "POST",
+        "responseMode": "onReceived",
+        "responseData": {
+          "responseBody": "={{$json[\"reply\"]}}"
+        }
+      }
+    },
+    {
+      "id": "detectLanguage",
+      "type": "n8n-nodes-base.function",
+      "name": "Detect Language",
+      "parameters": {
+        "functionCode": "const franc = require('franc');\nconst lang = franc($json.text);\nlet detected = 'en';\nif (lang === 'hin') detected = 'hi';\nelse if (lang === 'mal') detected = 'ml';\nreturn [{ json: { originalText: $json.text, language: detected } }];"
+      }
+    },
+    {
+      "id": "translateToEnglish",
+      "type": "n8n-nodes-base.httpRequest",
+      "name": "Translate to English",
+      "parameters": {
+        "url": "https://api.mymemory.translated.net/get?q={{$json.originalText}}&langpair={{$json.language}}|en",
+        "responseFormat": "json"
+      },
+      "conditions": {
+        "if": {
+          "language": {
+            "not_equals": "en"
+          }
+        }
+      }
+    },
+    {
+      "id": "llmResponse",
+      "type": "n8n-nodes-base.openai",
+      "name": "Generate AI Reply",
+      "parameters": {
+        "model": "gpt-3.5-turbo",
+        "prompt": "={{$json.responseData?.responseData?.translatedText || $json.originalText}}",
+        "temperature": 0.7
+      }
+    },
+    {
+      "id": "translateBack",
+      "type": "n8n-nodes-base.httpRequest",
+      "name": "Translate Back",
+      "parameters": {
+        "url": "https://api.mymemory.translated.net/get?q={{$json.text}}&langpair=en|{{$json.language}}",
+        "responseFormat": "json"
+      },
+      "conditions": {
+        "if": {
+          "language": {
+            "not_equals": "en"
+          }
+        }
+      }
+    },
+    {
+      "id": "setReply",
+      "type": "n8n-nodes-base.set",
+      "name": "Set Final Reply",
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "reply",
+              "value": "={{$json.responseData?.responseData?.translatedText || $json.text}}"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "connections": {
+    "webhookTrigger": {
+      "main": [
+        [
+          {
+            "node": "detectLanguage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "detectLanguage": {
+      "main": [
+        [
+          {
+            "node": "translateToEnglish",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "llmResponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "translateToEnglish": {
+      "main": [
+        [
+          {
+            "node": "llmResponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "llmResponse": {
+      "main": [
+        [
+          {
+            "node": "translateBack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "setReply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "translateBack": {
+      "main": [
+        [
+          {
+            "node": "setReply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

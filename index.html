@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Sakhi - Vintage Agriculture Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="starfield"></div>
+    <div id="floating-patterns"></div>
+    
+    <!-- Landing Page -->
+    <section id="landing" class="section active">
+        <nav class="vintage-nav">
+            <div class="nav-brand">
+                <h1 class="brand-title">Krishi Sakhi</h1>
+                <p class="brand-subtitle">Vintage Agriculture Platform</p>
+            </div>
+            <div class="nav-actions">
+                <button class="vintage-btn login-btn" onclick="showLoginModal()">Login</button>
+                <button class="vintage-btn signup-btn" onclick="showSignupModal()">Sign Up</button>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2 class="hero-title">Bridging Tradition with Innovation</h2>
+                <p class="hero-description">Connect farmers with companies, leverage AI-powered agriculture insights, and modernize farming with our vintage-inspired platform.</p>
+                <div class="hero-features">
+                    <div class="feature-item" data-scroll-trigger>
+                        <div class="feature-icon">🌾</div>
+                        <h3>Land Registration</h3>
+                        <p>Register your farmland for company partnerships</p>
+                    </div>
+                    <div class="feature-item" data-scroll-trigger>
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Assistant</h3>
+                        <p>Meet Mr. Cropper - Your farming companion</p>
+                    </div>
+                    <div class="feature-item" data-scroll-trigger>
+                        <div class="feature-icon">🏢</div>
+                        <h3>Company Connect</h3>
+                        <p>Direct connection between farmers and agri-companies</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-preview" data-scroll-trigger>
+            <h3>Premium Plans</h3>
+            <div class="plan-cards">
+                <div class="plan-card">
+                    <h4>Basic</h4>
+                    <div class="price">₹999</div>
+                    <p>Essential farming guidance</p>
+                </div>
+                <div class="plan-card featured">
+                    <h4>Drone Premium</h4>
+                    <div class="price">₹5,999</div>
+                    <p>AI monitoring & drone surveys</p>
+                </div>
+                <div class="plan-card">
+                    <h4>Company Premium</h4>
+                    <div class="price">₹999/month</div>
+                    <p>Full farmer access</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Farmer Dashboard -->
+    <section id="farmer-dashboard" class="section dashboard">
+        <nav class="dashboard-nav">
+            <div class="nav-brand">
+                <h1>Krishi Sakhi</h1>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-item active" onclick="showFarmerSection('ai-assistant')">
+                    <span class="nav-icon">🤖</span>
+                    AI Assistant
+                </button>
+                <button class="nav-item" onclick="showFarmerSection('register-land')">
+                    <span class="nav-icon">📋</span>
+                    Register Land
+                </button>
+                <button class="nav-item" onclick="showFarmerSection('my-listings')">
+                    <span class="nav-icon">📝</span>
+                    My Listings
+                </button>
+                <button class="nav-item" onclick="showFarmerSection('subscriptions')">
+                    <span class="nav-icon">⭐</span>
+                    My Subscriptions
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+                <button class="logout-btn" onclick="showLanding()">Logout</button>
+        </nav>
+            </div>
+            
+
+        <div class="dashboard-content">
+            <!-- AI Assistant -->
+            <div id="ai-assistant" class="dashboard-section active">
+                <div class="section-header">
+                    <h2>Meet Mr. Cropper</h2>
+                    <p>Your AI-powered farming assistant</p>
+                </div>
+                <div class="ai-chat">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Hello! I'm Mr. Cropper, your farming assistant. Ask me anything about crops, seasons, soil, or farming techniques!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chatInput" placeholder="Ask Mr. Cropper about farming...">
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register Land -->
+            <div id="register-land" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Register Your Land</h2>
+                    <p>List your farmland for company acquisition</p>
+                </div>
+                <form class="land-form" onsubmit="submitLandRegistration(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Land Photos</label>
+                            <input type="file" multiple accept="image/*" id="landPhotos">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" placeholder="Village, District, State" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Land Size (Acres)</label>
+                            <input type="number" step="0.1" placeholder="e.g., 2.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Season</label>
+                            <select required>
+                                <option value="">Select Season</option>
+                                <option value="rabi">Rabi (Winter Crop)</option>
+                                <option value="kharif">Kharif (Monsoon Crop)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Intended Growth</label>
+                            <select required>
+                                <option value="">Select Type</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="mushrooms">Mushrooms</option>
+                                <option value="grains">Grains</option>
+                                <option value="cash-crops">Cash Crops</option>
+                                <option value="product-based">Product-based</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Soil Type</label>
+                            <select required>
+                                <option value="">Select Soil Type</option>
+                                <option value="clay">Clay</option>
+                                <option value="sandy">Sandy</option>
+                                <option value="loam">Loam</option>
+                                <option value="silt">Silt</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Water Availability</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="bore-well"> Bore Well</label>
+                            <label><input type="checkbox" value="canal"> Canal</label>
+                            <label><input type="checkbox" value="rain-fed"> Rain Fed</label>
+                            <label><input type="checkbox" value="river"> River Nearby</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="vintage-btn">Register Land</button>
+                </form>
+            </div>
+
+            <!-- My Listings -->
+            <div id="my-listings" class="dashboard-section">
+                <div class="section-header">
+                    <h2>My Land Listings</h2>
+                    <p>Manage your registered farmland</p>
+                </div>
+                <div class="listings-grid" id="listingsGrid">
+                </div>
+            </div>
+
+            <!-- Subscriptions -->
+            <div id="subscriptions" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Premium Plans</h2>
+                    <p>Choose a plan that fits your farming needs</p>
+                </div>
+                <div class="subscription-plans">
+                    <div class="plan-card">
+                        <h3>Basic Plan</h3>
+                        <div class="plan-price">₹999</div>
+                        <ul class="plan-features">
+                            <li>Fertilizer guidance</li>
+                            <li>Harvesting tips</li>
+                            <li>Crop selection advice</li>
+                            <li>Propagation methods</li>
+                        </ul>
+                        <button class="vintage-btn" onclick="subscribeToPlan('basic')">Subscribe</button>
+                    </div>
+                    <div class="plan-card featured">
+                        <h3>Drone Premium</h3>
+                        <div class="plan-price">₹5,999</div>
+                        <ul class="plan-features">
+                            <li>Drone survey</li>
+                            <li>AI monitoring</li>
+                            <li>Security sweeps</li>
+                            <li>Harmful risk detection</li>
+                            <li>Mushroom cultivation</li>
+                            <li>High-income planning</li>
+                        </ul>
+                        <button class="vintage-btn" onclick="subscribeToPlan('drone')">Subscribe</button>
+                    </div>
+                    <div class="plan-card">
+                        <h3>Company Premium</h3>
+                        <div class="plan-price">₹999/month</div>
+                        <ul class="plan-features">
+                            <li>Farmer contact access</li>
+                            <li>Exact location details</li>
+                            <li>Land photos</li>
+                            <li>Drone footage</li>
+                        </ul>
+                        <button class="vintage-btn" onclick="subscribeToPlan('company')">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Dashboard -->
+    <section id="company-dashboard" class="section dashboard">
+        <nav class="dashboard-nav">
+            <div class="nav-brand">
+                <h1>Krishi Sakhi</h1>
+                <span class="user-type">Company Portal</span>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-item active" onclick="showCompanySection('crop-categories')">
+                    <span class="nav-icon">🌾</span>
+                    Crop Categories
+                </button>
+                <button class="nav-item" onclick="showCompanySection('premium-access')">
+                    <span class="nav-icon">⭐</span>
+                    Premium Access
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+            </div>
+            <button class="logout-btn" onclick="showLanding()">Logout</button>
+        </nav>
+
+        <div class="dashboard-content">
+            <!-- Crop Categories -->
+            <div id="crop-categories" class="dashboard-section active">
+                <div class="section-header">
+                    <h2>Available Crop Categories</h2>
+                    <p>Explore registered farmlands by crop type</p>
+                </div>
+                <div class="category-grid">
+                    <div class="category-card" onclick="toggleCategory('food')">
+                        <div class="category-icon">🍚</div>
+                        <h3>Food Crops</h3>
+                        <p class="category-count">24 lands available</p>
+                        <div class="category-content" id="food-content">
+                            <div class="land-card">
+                                <h4>Premium Rice Land</h4>
+                                <p><strong>Size:</strong> 5.2 acres</p>
+                                <p><strong>Location:</strong> Thanjavur, Tamil Nadu</p>
+                                <p><strong>Differentiators:</strong> Delta soil, canal irrigation</p>
+                                <button class="vintage-btn small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-card" onclick="toggleCategory('cash')">
+                        <div class="category-icon">💰</div>
+                        <h3>Cash Crops</h3>
+                        <p class="category-count">18 lands available</p>
+                        <div class="category-content" id="cash-content">
+                            <div class="land-card">
+                                <h4>Sugarcane Estate</h4>
+                                <p><strong>Size:</strong> 8.7 acres</p>
+                                <p><strong>Location:</strong> Pune, Maharashtra</p>
+                                <p><strong>Differentiators:</strong> Sugar mill proximity, black soil</p>
+                                <button class="vintage-btn small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-card" onclick="toggleCategory('oil')">
+                        <div class="category-icon">🫒</div>
+                        <h3>Oil Crops</h3>
+                        <p class="category-count">12 lands available</p>
+                        <div class="category-content" id="oil-content">
+                            <div class="land-card">
+                                <h4>Sunflower Fields</h4>
+                                <p><strong>Size:</strong> 3.4 acres</p>
+                                <p><strong>Location:</strong> Bellary, Karnataka</p>
+                                <p><strong>Differentiators:</strong> Well-drained soil, good sunshine</p>
+                                <button class="vintage-btn small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-card" onclick="toggleCategory('fiber')">
+                        <div class="category-icon">🧶</div>
+                        <h3>Fiber Crops</h3>
+                        <p class="category-count">9 lands available</p>
+                        <div class="category-content" id="fiber-content">
+                            <div class="land-card">
+                                <h4>Cotton Plantation</h4>
+                                <p><strong>Size:</strong> 6.1 acres</p>
+                                <p><strong>Location:</strong> Guntur, Andhra Pradesh</p>
+                                <p><strong>Differentiators:</strong> Black cotton soil, moderate rainfall</p>
+                                <button class="vintage-btn small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card" onclick="toggleCategory('horticultural')">
+                        <div class="category-icon">🍎</div>
+                        <h3>Horticultural</h3>
+                        <p class="category-count">31 lands available</p>
+                        <div class="category-content" id="horticultural-content">
+                            <div class="land-card">
+                                <h4>Apple Orchard</h4>
+                                <p><strong>Size:</strong> 4.3 acres</p>
+                                <p><strong>Location:</strong> Shimla, Himachal Pradesh</p>
+                                <p><strong>Differentiators:</strong> High altitude, cold climate</p>
+                                <button class="vintage-btn small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card" onclick="toggleCategory('plantation')">
+                        <div class="category-icon">🌴</div>
+                        <h3>Plantation</h3>
+                        <p class="category-count">15 lands available</p>
+                        <div class="category-content" id="plantation-content">
+                            <div class="land-card">
+                                <h4>Coconut Grove</h4>
+                                <p><strong>Size:</strong> 7.8 acres</p>
+                                <p><strong>Location:</strong> Pollachi, Tamil Nadu</p>
+                                <p><strong>Differentiators:</strong> Coastal climate, water abundance</p>
+                                <button class="vintage-btn small">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Access -->
+            <div id="premium-access" class="dashboard-section">
+                <div class="section-header">
+                    <h2>Premium Access</h2>
+                    <p>Unlock detailed farmer information and land data</p>
+                </div>
+                <div class="premium-benefits">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📞</div>
+                        <h3>Direct Farmer Contact</h3>
+                        <p>Get phone numbers and contact details of farmers</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📍</div>
+                        <h3>Exact Location</h3>
+                        <p>Access precise GPS coordinates and land boundaries</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">📸</div>
+                        <h3>High-Res Photos</h3>
+                        <p>View detailed land photographs and documentation</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🚁</div>
+                        <h3>Drone Footage</h3>
+                        <p>Aerial surveys and topographical analysis</p>
+                    </div>
+                </div>
+                <div class="premium-pricing">
+                    <h3>Company Premium Plan</h3>
+                    <div class="price-display">₹999/month</div>
+                    <button class="vintage-btn large" onclick="subscribeToPlan('company-premium')">
+                        Subscribe Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Login to Krishi Sakhi</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>User Type</label>
+                    <select id="loginUserType" onchange="updateLoginForm()">
+                        <option value="farmer">Farmer</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+                <div id="loginFields">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="loginPhone" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="vintage-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            <h2>Join Krishi Sakhi</h2>
+            <form onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label>I am a</label>
+                    <select id="signupUserType" onchange="updateSignupForm()">
+                        <option value="farmer">Farmer</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+                <div id="signupFields">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="signupPhone" placeholder="+91 XXXXX XXXXX" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="vintage-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
